@@ -1,4 +1,4 @@
-%% fmplot examples
+%% bmplot examples
 % careful, it will erase all variables
 clear vars
 close all
@@ -51,4 +51,4 @@ bwplot(abs([t' t' t' t']), abs([y_1' y_2' y_3' y_4']), ...
        15, 12, ...
        'Time (s)', '$y_n(t)$', ...
        {'$y_1(t)$', '$y_2(t)$', '$y_3(t)$', '$y_4(t)$'})
-export_fig teste.eps
+% export_fig teste.eps
