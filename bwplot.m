@@ -8,7 +8,7 @@ figure('Units'             , 'centimeters', ...
        'PaperPositionMode' , 'auto');
 set(gcf, 'Color', 'w')
 
-s_x = size(x);
+s_x = length(x);
 
 % plot configuration
 line_color = [0 0 0; 0.5 0.5 0.5; 0.7 0.7 0.7; 0.75 0.75 0.75];
@@ -18,22 +18,22 @@ m_size = [1, 70, 70, 100];
 m_size_l = [1, 8, 8, 10];
 line_style = {'-', '--', '-.', ':'};
 
-for i = 1:s_x(2)
+for i = 1:s_x
     cfg = rem(length(line_color)-1+i, length(line_color)) + 1;
-    plot_line = line(x(:,i), y(:,i));
+    plot_line = line(x{i}, y{i});
     set(plot_line, 'LineWidth', 1.5, ...
         'Color', line_color(cfg, :), ...
         'LineStyle', line_style{cfg});
     hold on
     % plot markers
-    line_m = scatter(x(int64(1+end/n_mk(cfg)):int64(end/n_mk(cfg)):end, i), ...  
-                    y(int64(1+end/n_mk(cfg)):int64(end/n_mk(cfg)):end, i), m_size(cfg));
+    line_m = scatter(x{i}(int64(1+end/n_mk(cfg)):int64(end/n_mk(cfg)):end), ...  
+                    y{i}(int64(1+end/n_mk(cfg)):int64(end/n_mk(cfg)):end), m_size(cfg));
     set(line_m, 'MarkerEdgeColor', line_color(cfg, :), ...
                  'MarkerFaceColor', [1, 1, 1], ...
                  'Marker', marker_type{cfg}, ...
                  'LineWidth', 1.5);
     % plot for legend
-    line_l(i) = line(x(1, i), y(1, i));
+    line_l(i) = line(x{i}(1), y{i}(1));
     set(line_l(i), 'LineWidth', 1.5, ...
                    'Color', line_color(cfg, :), ...
                    'LineStyle', line_style{cfg}, ...
@@ -43,11 +43,17 @@ for i = 1:s_x(2)
                    'MarkerSize', m_size_l(cfg),...
                    'LineWidth', 1.5);
 end
-xmin = min(min(x));
-xmax = max(max(x));
-ymin = min(min(y));
-ymax = max(max(y));
 
+xmin = 1e20;
+xmax = -1e20;
+ymin = 1e20;
+ymax = -1e20;
+for i = 1:length(x)
+    xmin = min(min(xmin, x{i}));
+    xmax = max(max(xmax, x{i}));
+    ymin = min(min(ymin, y{i}));
+    ymax = max(max(ymax, y{i}));
+end
 
 % setup the plot style
 y_extra = 0.03;
